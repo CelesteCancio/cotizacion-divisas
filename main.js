@@ -17,17 +17,25 @@ function mostrarDivisas (){
         .then(respuesta => respuesta.json())
         .then(respuestaJSON => {
             
-            tituloDivisas.textContent = `Cotización base ${respuestaJSON.base_code} actualizada al ${respuestaJSON.time_last_update_utc}`;                        
-            const conversionRates = respuestaJSON.conversion_rates;           
-            for (divisa in conversionRates){
-                const li = document.createElement ("li");
-                li.textContent = `${divisa}: ${conversionRates[divisa]}`;                
-                listaDivisas.appendChild (li);
+            console.log(respuestaJSON);
+            if(respuestaJSON.base_code){
+                tituloDivisas.textContent = `Cotización base ${respuestaJSON.base_code} actualizada al ${respuestaJSON.time_last_update_utc}`;                        
+                const conversionRates = respuestaJSON.conversion_rates;           
+                for (divisa in conversionRates){
+                    const li = document.createElement ("li");
+                    li.textContent = `${divisa}: ${conversionRates[divisa]}`;                
+                    listaDivisas.appendChild (li);
+                }
             }
+            else{
+                tituloDivisas.textContent = `Base no encontrada (${respuestaJSON.base_code})`;                        
+            }
+            
+
          })
         .catch(error => mostrarAlertaError(error));
 }
 
 function mostrarAlertaError (error){
-    alert(`No se pudo buscar la moneda ingresada, error ${error}`);
+    console.alert(`No se pudo buscar la moneda ingresada, error ${error}`);
 }
